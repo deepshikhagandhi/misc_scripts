@@ -40,3 +40,8 @@ To create Lambda fn:
 2. Choose an existing role - in my case it was system/lambda-basic-execution-role (should have the correct policy with permissions). The Lambda fn specifically needs "DescribeTags"
 3. Upload/copy code
 4. Test with sample event
+
+Helpful Links:
+https://github.com/DataDog/dd-aws-lambda-functions/blob/master/rds_enhanced_monitoring/main.py
+http://docs.datadoghq.com/api/#tags
+http://docs.datadoghq.com/guides/eventcorrelation/
