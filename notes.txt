@@ -1,0 +1,42 @@
+# misc_scripts
+
+Steps for capturing termination events in DD:
+
+1. Created a Cloudwatch Rule - i named it "dg-test-termination-events". Choose Event Pattern, Service Name=EC2, Event Type=EC2 instance state-change Notification, Specific state(s)=terminated, Any instance
+2. Event Pattern Preview looks like this
+{
+  "source": [
+    "aws.ec2"
+  ],
+  "detail-type": [
+    "EC2 Instance State-change Notification"
+  ],
+  "detail": {
+    "state": [
+      "terminated"
+    ]
+  }
+}
+3. Sample event looks like this
+{
+  "id": "f74e985d-c3ff-415d-b5fa-d3614c5e3434",
+  "detail-type": "EC2 Instance State-change Notification",
+  "source": "aws.ec2",
+  "account": "123456789012",
+  "time": "2015-11-11T21:36:48Z",
+  "region": "us-east-1",
+  "resources": [
+    "arn:aws:ec2:us-east-1:123456789012:instance/i-abcd5555"
+  ],
+  "detail": {
+    "instance-id": "i-abcd5555",
+    "state": "terminated"
+  }
+}
+4. Select Targets=Lambda Function - i named it "termination-events-cloudwatch-to-datadog"
+
+To create Lambda fn:
+1. Runtime=Python2.7, Handler=termination-events-cloudwatch-to-datadog.lambda_handler
+2. Choose an existing role - in my case it was system/lambda-basic-execution-role (should have the correct policy with permissions). The Lambda fn specifically needs "DescribeTags"
+3. Upload/copy code
+4. Test with sample event
